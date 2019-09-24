@@ -1,0 +1,328 @@
+# Custom artifacts.
+
+name: WindowsXMLEventLogs
+doc: Windows XML Event Logs.
+sources:
+- type: FILE
+  attributes:
+    paths: ['%%environ_systemroot%%\System32\winevt\Logs\*.evtx']
+    separator: '\'
+labels: [Logs]
+supported_os: [Windows]
+---
+name: WindowsEssentials
+doc: Most important artifacts on Windows.
+sources:
+- type: ARTIFACT_GROUP
+  attributes:
+    names:
+    # Registry hives
+    - 'WindowsUserRegistryFiles'
+    - 'WindowsUserRegistryTransactionLogFiles'
+    - 'WindowsSystemRegistryFiles'
+    - 'WindowsSystemRegistryTransactionLogFiles'
+    - 'WindowsAMCacheHveFile'
+    # Execution artifacts
+    - 'WindowsPrefetchFiles'
+    - 'WindowsUserRecentFiles'
+    - 'WindowsUserAutomaticDestinationsJumpLists'
+    - 'WindowsUserCustomDestinationsJumpLists'
+    - 'WindowsActivitiesCache'
+    - 'WindowsRecentFileCacheBCF'
+    - 'WindowsSystemResourceUsageMonitorDatabaseFile'
+    # Persistence
+    - 'WindowsApplicationCompatibilityInstalledShimDatabases'
+    - 'WindowsCIMRepositoryFiles'
+    - 'WindowsGroupPolicyScripts'
+    - 'WindowsScheduledTasks'
+    - 'WindowsStartupFolders'
+    # USB
+    - 'WindowsSetupApiLogs'
+    # Event logs
+    - 'WindowsXMLEventLogs'
+    # NTFS
+    - 'NTFSMFTFiles'
+    - 'NTFSLogFile'
+    # MISC
+    - 'WindowsBITSQueueManagerDatabases'
+    - 'WindowsHostsFiles'
+    - 'WindowsSystemIniFiles'
+    # Browser history
+    - 'ChromeHistory'
+    - 'FirefoxHistory'
+    - 'InternetExplorerHistory'
+    - 'OperaHistory'
+    - 'SafariHistory'
+    # Commands
+    - 'WindowsFirewallEnabledRules'
+    - 'WindowsFirewallRules'
+    # WMI
+    - 'WMIAccountUsersDomain'
+    - 'WMIAntivirusProduct'
+    - 'WMIComputerSystemProduct'
+    - 'WMIDNSClientCache'
+    - 'WMIDrivers'
+    - 'WMIEnumerateASEC'
+    - 'WMIEnumerateCLEC'
+    - 'WMIHotFixes'
+    - 'WMIInstalledSoftware'
+    - 'WMILastBootupTime'
+    - 'WMILoggedOnSessions'
+    - 'WMILoggedOnUsers'
+    - 'WMILogicalDisks'
+    - 'WMINetNeighbors'
+    - 'WMINetTCPConnections'
+    - 'WMINetUDPEndpoints'
+    - 'WMIOperatingSystem'
+    - 'WMIPhysicalMemory'
+    - 'WMIProcessList'
+    - 'WMIProfileUsersHomeDir'
+    - 'WMIScheduledTasks'
+    - 'WMIServices'
+    - 'WMIStartupCommands'
+supported_os: [Windows]
+---
+name: LinuxEssentials
+doc: Most important artifacts on Linux.
+sources:
+- type: ARTIFACT_GROUP
+  attributes:
+    names:
+    # Configuration files
+    - 'NfsExportsFile'
+    - 'SshdConfigFile'
+    - 'SshUserConfigFile'
+    # Docker
+    - 'DockerContainerConfig'
+    - 'GKEDockerContainerLogs'
+    # Linux
+    - 'AnacronFiles'
+    - 'APTSources'
+    - 'APTTrustKeys'
+    - 'CronAtAllowDenyFiles'
+    - 'DebianPackagesLogFiles'
+    - 'DebianPackagesStatus'
+    - 'DebianVersion'
+    - 'DNSResolvConfFile'
+    - 'HostAccessPolicyConfiguration'
+    - 'IPTablesRules'
+    - 'KernelModules'
+    - 'LinuxAtJobs'
+    - 'LinuxAuditLogs'
+    - 'LinuxAuthLogs'
+    - 'LinuxCronLogs'
+    - 'LinuxCronTabs'
+    - 'LinuxDaemonLogFiles'
+    - 'LinuxDistributionRelease'
+    - 'LinuxDSDTTable'
+    - 'LinuxFstab'
+    - 'LinuxGrubConfiguration'
+    - 'LinuxHostnameFile'
+    - 'LinuxInitrdFiles'
+    - 'LinuxIssueFile'
+    - 'LinuxKernelLogFiles'
+    - 'LinuxLastlogFile'
+    - 'LinuxLoaderSystemPreloadFile'
+    - 'LinuxLSBInit'
+    - 'LinuxLocalTime'
+    - 'LinuxLSBRelease'
+    - 'LinuxMessagesLogFiles'
+    - 'LinuxMountCmd'
+    - 'LinuxMountInfo'
+    - 'LinuxPamConfigs'
+    - 'LinuxPasswdFile'
+    - 'LinuxReleaseInfo'
+    - 'LinuxRsyslogConfigs'
+    - 'LinuxScheduleFiles'
+    - 'LinuxServices'
+    - 'LinuxSSDTTables'
+    - 'LinuxSysLogFiles'
+    - 'LinuxSyslogNgConfigs'
+    - 'LinuxSystemdOSRelease'
+    - 'LinuxSysVInit'
+    - 'LinuxTimezoneFile'
+    - 'LinuxUtmpFiles'
+    - 'LinuxWtmp'
+    - 'LinuxXinetd'
+    - 'ListProcessesPsCommand'
+    - 'LoadedKernelModules'
+    - 'LoginPolicyConfiguration'
+    - 'NetgroupConfiguration'
+    - 'NtpConfFile'
+    - 'PCIDevicesInfoFiles'
+    - 'SSHHostPubKeys'
+    - 'ThumbnailCacheFolder'
+    - 'YumSources'
+    - 'ZeitgeistDatabase'
+    # /proc
+    - 'LinuxASLREnabled'
+    - 'LinuxIgnoreICMPBroadcasts'
+    - 'LinuxKernelBootloader'
+    - 'LinuxKernelModuleRestrictions'
+    - 'LinuxKernelModuleTaintStatus'
+    - 'LinuxNetworkIpForwardingState'
+    - 'LinuxNetworkPathFilteringSettings'
+    - 'LinuxNetworkRedirectState'
+    - 'LinuxProcArp'
+    - 'LinuxProcMounts'
+    - 'LinuxProcSysHardeningSettings'
+    - 'LinuxRestrictedDmesgReadPrivileges'
+    - 'LinuxRestrictedKernelPointerReadPrivileges'
+    - 'LinuxSecureFsLinks'
+    - 'LinuxSecureSuidCoreDumps'
+    - 'LinuxSyncookieState'
+    - 'LinuxSysctlCmd'
+    # Unix
+    - 'AllShellConfigs'
+    - 'AllUsersShellHistory'
+    - 'GlobalShellConfigs'
+    - 'RootUserShellConfigs'
+    - 'RootUserShellHistory'
+    - 'UnixGroups'
+    - 'UnixHostsFile'
+    - 'UnixPasswd'
+    - 'UnixShadowFile'
+    - 'UnixSudoersConfiguration'
+    - 'UnixUsersGroups'
+    - 'UsersShellConfigs'
+    - 'UsersShellHistory'
+    # Browser history
+    - 'ChromeHistory'
+    - 'FirefoxHistory'
+    - 'OperaHistory'
+    # Web Servers
+    - 'NginxAccessLogs'
+    - 'ApacheAccessLogs'
+    - 'WordpressConfigFile'
+supported_os: [Linux]
+---
+name: DarwinEssentials
+doc: Most important artifacts on Darwin.
+sources:
+- type: ARTIFACT_GROUP
+  attributes:
+    names:
+    # Configuration files
+    - 'NfsExportsFile'
+    - 'SshdConfigFile'
+    - 'SshUserConfigFile'
+    # Mac OS
+    - 'MacOSAppleSystemLogFiles'
+    - 'MacOSApplications'
+    - 'MacOSApplicationsRecentItems'
+    - 'MacOSApplicationSupport'
+    - 'MacOSAtJobs'
+    - 'MacOSAuditLogFiles'
+    - 'MacOSBashHistory'
+    - 'MacOSBashSessions'
+    - 'MacOSBluetoothPlistFile'
+    - 'MacOSCoreAnalyticsFiles'
+    - 'MacOSCronTabs'
+    - 'MacOSDock'
+    - 'MacOSGlobalPreferencesPlistFile'
+    - 'MacOSHostsFile'
+    - 'MacOSiCloudAccounts'
+    - 'MacOSiCloudPreferences'
+    - 'MacOSiDevices'
+    - 'MacOSInstallationHistory'
+    - 'MacOSInstallationLogFile'
+    - 'MacOSiOSBackupInfo'
+    - 'MacOSiOSBackupManifest'
+    - 'MacOSiOSBackupMbdb'
+    - 'MacOSiOSBackupsMainDirectory'
+    - 'MacOSiOSBackupStatus'
+    - 'MacOSKeychains'
+    - 'MacOSKeyboardLayoutPlistFile'
+    - 'MacOSKextFiles'
+    - 'MacOSDuetKnowledgeBase'
+    - 'MacOSLaunchAgentsPlistFiles'
+    - 'MacOSLaunchDaemonsPlistFiles'
+    - 'MacOSLastlogFile'
+    - 'MacOSLoadedKexts'
+    - 'MacOSLocalTime'
+    - 'MacOSLoginWindowPlistFile'
+    - 'MacOSMailAccounts'
+    - 'MacOSMailBackupTOC'
+    - 'MacOSMailboxes'
+    - 'MacOSMailDownloadAttachments'
+    - 'MacOSMailEnvelopIndex'
+    - 'MacOSMailIMAP'
+    - 'MacOSMailMainDirectory'
+    - 'MacOSMailOpenedAttachments'
+    - 'MacOSMailPOP'
+    - 'MacOSMailPreferences'
+    - 'MacOSMailRecentContacts'
+    - 'MacOSMailSignatures'
+    - 'MacOSMiscLogs'
+    - 'MacOSMountedDMGs'
+    - 'MacOSNotificationCenter'
+    - 'MacOSPeriodicSystemFunctions'
+    - 'MacOSQuarantineEvents'
+    - 'MacOSRecentItems'
+    - 'MacOSSidebarLists'
+    - 'MacOSSleepimageFile'
+    - 'MacOSStartupItemsPlistFiles'
+    - 'MacOSSwapFiles'
+    - 'MacOSSystemConfigurationPreferencesPlistFile'
+    - 'MacOSSystemInstallationTime'
+    - 'MacOSSystemLogFiles'
+    - 'MacOSSystemPreferencesPlistFiles'
+    - 'MacOSSystemVersionPlistFile'
+    - 'MacOSTimeMachinePlistFile'
+    - 'MacOSUnifiedLogging'
+    - 'MacOSUpdate'
+    - 'MacOSUserApplicationLogs'
+    - 'MacOSUserDesktopDirectory'
+    - 'MacOSUserDocumentsDirectory'
+    - 'MacOSUserDownloadsDirectory'
+    - 'MacOSUserGlobalPreferences'
+    - 'MacOSUserLibraryDirectory'
+    - 'MacOSUserLoginItems'
+    - 'MacOSUserMoviesDirectory'
+    - 'MacOSUserMusicDirectory'
+    - 'MacOSUserPasswordHashesPlistFiles'
+    - 'MacOSUserPicturesDirectory'
+    - 'MacOSUserPreferences'
+    - 'MacOSUserPublicDirectory'
+    - 'MacOSUsers'
+    - 'MacOSUserSocialAccounts'
+    - 'MacOSUserTrash'
+    - 'MacOSUtmpFile'
+    - 'MacOSUtmpxFile'
+    - 'MacOSWirelessNetworks'
+    # Unix
+    - 'AllShellConfigs'
+    - 'AllUsersShellHistory'
+    - 'GlobalShellConfigs'
+    - 'RootUserShellConfigs'
+    - 'RootUserShellHistory'
+    - 'UnixGroups'
+    - 'UnixHostsFile'
+    - 'UnixPasswd'
+    - 'UnixShadowFile'
+    - 'UnixSudoersConfiguration'
+    - 'UnixUsersGroups'
+    - 'UsersShellConfigs'
+    - 'UsersShellHistory'
+    # Browser history
+    - 'ChromeHistory'
+    - 'FirefoxHistory'
+    - 'OperaHistory'
+    - 'SafariHistory'
+    # Web Servers
+    - 'NginxAccessLogs'
+    - 'ApacheAccessLogs'
+    - 'WordpressConfigFile'
+supported_os: [Darwin]
+---
+name: Essentials
+doc: Most important artifacts.
+sources:
+- type: ARTIFACT_GROUP
+  attributes:
+    names:
+    - 'LinuxEssentials'
+    - 'DarwinEssentials'
+    - 'WindowsEssentials'
+supported_os: [Darwin,Linux,Windows]
+

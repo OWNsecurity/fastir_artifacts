@@ -1,0 +1,52 @@
+language: python
+env:
+  global:
+  - TZ=UTC
+  - secure: agMYcW/ZuO1ugMhFcBXymCUrjyFHdPK54MgJrAmVMaxm5K/UhprCgJ0NONur7twvEPmfXsXYrqTy1up2bQJ1XBDplBsO9oGm1oynLzj9xXNp/EcMIeYNbTnLOcwH1Ik+PFO6qdy7vx1sSs9/WaHqRWl9rKDvv8csE5kFNbjV9f2aUpljQS2deVA0jbU5Q9x8mJUuaM0WNEJOzvvGqYTmCQZ7fCXTPhwaTM6+YLAuQz3jHxDGKP6FjzgxIMYkrZd37JADyemoGEJ1ho9MXlx9AywtTKDHSGU85B/fzhyRv9TnzczHvbn6W5DqeBgWpKeWsxYEl/oNEUMlJxJrk5zZkE2Q0k4ejE038/K0jhp/gMNw7J5NbxBoIFMnt8OcXIxlt+E/V4oYcPnrKG4+H59XgcgwAEdEUmzq/sIe0HOVFjG6icPKXF9AmPhlBIRs7CF1TE+9irNQTu93L+9TYGbo3O3xtI8QIcIT92ZFqfelobj3OYtbAqoXQ6wvnYomrZ6iviodf+gtgi4SVQ4nFApzOzUO7eg5WDyAKCdeVc/YXp284zuHF/jTA2c8T8MwAmpwjwHtIKjuso06CY6FxkMHSxf2lDI0VmzC7nwOoUQwrzPrIytHrmA308BdILIfgAGkk12p1YuMeVZfkE+ZEW3wCWdxmkuJCLQgf0o0U0mokCg=
+matrix:
+  include:
+  - name: Python 3.7 on Xenial Linux
+    python: 3.7
+    dist: xenial
+    after_script:
+    - pip install -U codacy-coverage
+    - python-codacy-coverage -r coverage.xml
+  - name: Python 3 on macOS
+    os: osx
+    language: shell
+    before_install:
+    - python3 -m venv .venv
+    - source .venv/bin/activate
+  - name: Python 3 32bits on Windows
+    os: windows
+    language: shell
+    before_install:
+    - choco install --forcex86 python3
+    - export PATH="/c/Python37:/c/Python37/Scripts:$PATH"
+    - python -m pip install --upgrade pip wheel
+install:
+- pip install -U pip wheel
+- pip install -U -r requirements.txt
+- pip install -U -r requirements-test.txt
+script:
+- python -m pytest --cov-report xml --cov fastir tests
+- pyinstaller fastir_artifacts.spec
+- python -m pytest integration_tests
+after_success:
+- python -m zipfile -c FastIR-Artifacts-${TRAVIS_OS_NAME}.zip dist/fastir_artifacts
+before_deploy:
+- git config --local user.name "fastir-build"
+- git config --local user.email "50839404+fastir-build@users.noreply.github.com"
+- export TRAVIS_TAG=${TRAVIS_TAG:-$(git log --date=format-local:%Y%m%d%H%M%S --format=%cd-%h
+  -1)}
+- git tag $TRAVIS_TAG || true
+deploy:
+  provider: releases
+  api_key:
+    secure: IlzBvix3ztzH4dMrgQMFaiyAzKsN0gR1488jPe0Z+62trSU5Gkt5KmeJ/mYTpNAX4KammERKDuilgSBnL4hsNslkwfm8jERyGbQTIKI1DzJ6loUQ3XPWGP3h3R+j+EiEwnWc56/nM2rzRaX9xYPKiwdphehhFR1APkNj3p+djt6VqB42xL6+z5OpqK4NY7ZGiL8JUcbky5JBa50SNKw3vEuoh1h4clc0BhEkNW8qt4N2UZP83kNcxzjp0IdJGDn0vDM5SyW79KkaTw8RT+G/3WJwZXmVvlxNVxTc0mmQ7ITqhJELbCIY2Tu79FURjs1JETpmZnPcwyI0/aIdEG6RuftbucIHkgG9FKnm5EJSaZ6+wFtY2OlyecrEquflCwafn3RELBQ4joLTVM6UzHeAD2tSN888EbW8xcfuTq5j0beo1h0yMOxPJavtZePBy4KGbimnD/x/Ari4Dk6ehQ8NR9+FyFdRAbTOns9IKEXrAuzFpzSAH3lGcgYPUhZWH+SziyetPw1rb96gsSW0bNtTAUN1KZc8sFmQ35TavEj0J+E59GHO7C1NwF/F4XWvzpcfjMUF3bhSqUWws9EGlP4MYtTVLmL0IDOw5IPY6dFfHXy7rwwKT2JTOdF2CZptIe135RnVRaybQ7RV2bxkfoYxIT+B4jDFkC2vCCm6RA0j+0M=
+  file_glob: true
+  file: FastIR-Artifacts-*.zip
+  skip_cleanup: true
+  overwrite: true
+  on:
+    repo: SekoiaLab/fastir_artifacts

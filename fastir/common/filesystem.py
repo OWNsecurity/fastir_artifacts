@@ -91,6 +91,11 @@ class TSKFileSystem(FileSystem):
         self._entries_cache = {}
         self._entries_cache_last = []
 
+        # Open drive
+        img_info = pytsk3.Img_Info(self._device)
+        self._fs_info = pytsk3.FS_Info(img_info)
+        self._root = self._fs_info.open_dir('')
+
         super().__init__()
 
     def _relative_path(self, filepath):
@@ -98,11 +103,6 @@ class TSKFileSystem(FileSystem):
         return normalized_path[len(self._path):].lstrip('/')
 
     def _base_generator(self):
-        if not self._root:
-            img_info = pytsk3.Img_Info(self._device)
-            self._fs_info = pytsk3.FS_Info(img_info)
-            self._root = self._fs_info.open_dir('')
-
         yield PathObject(self, os.path.basename(self._path), self._path, self._root)
 
     def is_allocated(self, tsk_entry):
@@ -281,9 +281,13 @@ class FileSystemManager(AbstractCollector):
         # Fetch or create the matching filesystem
         if mountpoint.mountpoint not in self._filesystems:
             if mountpoint.fstype in TSK_FILESYSTEMS:
-                self._filesystems[mountpoint.mountpoint] = TSKFileSystem(
-                    self, mountpoint.device, mountpoint.mountpoint)
-            else:
+                try:
+                    self._filesystems[mountpoint.mountpoint] = TSKFileSystem(
+                        self, mountpoint.device, mountpoint.mountpoint)
+                except OSError:
+                    pass
+
+            if mountpoint.mountpoint not in self._filesystems:
                 self._filesystems[mountpoint.mountpoint] = OSFileSystem(mountpoint.mountpoint)
 
         return self._filesystems[mountpoint.mountpoint]

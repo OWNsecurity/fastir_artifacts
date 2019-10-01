@@ -46,9 +46,12 @@ def test_variables():
 def fake_partitions():
     Partition = namedtuple('Partition', ['mountpoint', 'device', 'fstype'])
 
+    test_data = os.path.join(os.path.dirname(__file__), 'data')
+
     partitions = [
-        Partition('/', os.path.join(os.path.dirname(__file__), 'data', 'image.raw'), 'NTFS'),
-        Partition(FS_ROOT, FS_ROOT, 'some_unsupported_fstype')
+        Partition('/', os.path.join(test_data, 'image.raw'), 'NTFS'),
+        Partition(FS_ROOT, FS_ROOT, 'some_unsupported_fstype'),
+        Partition(test_data, test_data, 'ext4')
     ]
 
     with patch('psutil.disk_partitions', return_value=partitions) as mock:

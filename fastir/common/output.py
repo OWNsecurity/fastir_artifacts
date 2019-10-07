@@ -56,8 +56,9 @@ class Outputs:
         self._hostname = platform.node()
         self._dirpath = os.path.join(self._dirpath, f"{now}-{self._hostname}")
 
-        # Create the directory
+        # Create the directory and set an environment variable that may be used in COMMAND artifacts
         os.makedirs(self._dirpath)
+        os.environ['FAOUTPUTDIR'] = self._dirpath
 
         self._setup_logging()
 

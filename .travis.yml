@@ -22,7 +22,7 @@ matrix:
     os: windows
     language: shell
     before_install:
-    - choco install --forcex86 python3
+    - choco install --forcex86 python3 pip
     - export PATH="/c/Python37:/c/Python37/Scripts:$PATH"
     - python -m pip install --upgrade pip wheel
 install:

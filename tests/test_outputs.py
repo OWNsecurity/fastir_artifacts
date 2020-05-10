@@ -92,6 +92,7 @@ def test_collect_pe_file_info(temp_dir, test_pe_file):
         record = jsonl.read()
 
         assert '@timestamp' in record
+        assert record['labels']['artifact'] == "TestArtifact"
         assert record['file']['path'].endswith('MSVCR71.dll')
         assert record['file']['size'] == 348160
         assert record['file']['mime_type'] == "application/x-msdownload"
@@ -104,6 +105,7 @@ def test_collect_pe_file_info(temp_dir, test_pe_file):
         assert record['file']['pe']['original_file_name'] == "MSVCR71.DLL"
         assert record['file']['pe']['product'] == "Microsoft® Visual Studio .NET"
         assert record['file']['pe']['imphash'] == "7acc8c379c768a1ecd81ec502ff5f33e"
+        assert record['file']['pe']['compilation'] == "2003-02-21T12:42:20"
 
 
 def test_collect_file(temp_dir, test_file):

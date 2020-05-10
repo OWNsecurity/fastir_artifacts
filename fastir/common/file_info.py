@@ -92,3 +92,6 @@ class FileInfo:
 
         self._add_vs_info(parsed_pe)
         self._add_file_property('pe', 'imphash', parsed_pe.get_imphash())
+        self._add_file_property(
+            'pe', 'compilation',
+            datetime.utcfromtimestamp(parsed_pe.FILE_HEADER.TimeDateStamp).isoformat())

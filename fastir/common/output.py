@@ -91,7 +91,10 @@ class Outputs:
                 self._file_info = jsonlines.open(
                     os.path.join(self._dirpath, f'{self._hostname}-file_info.jsonl'), 'w')
 
-            self._file_info.write(info.compute())
+            file_info = info.compute()
+            file_info['labels'] = {'artifact': artifact}
+
+            self._file_info.write(file_info)
 
     def add_collected_file(self, artifact, path_object):
         logger.info(f"Collecting file '{path_object.path}' for artifact '{artifact}'")

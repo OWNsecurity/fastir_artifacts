@@ -4,6 +4,9 @@ from datetime import datetime
 
 from pefile import PE
 
+from .logging import logger
+
+
 MAX_PE_SIZE = 50 * 1024 * 1024
 
 
@@ -56,8 +59,8 @@ class FileInfo:
         if len(self._content) > 0:
             try:
                 self._add_pe_info()
-            except Exception:
-                pass
+            except Exception as e:
+                logger.warning(f"Could not parse PE file '{self._path_object.path}': '{str(e)}'")
 
         return self._info
 

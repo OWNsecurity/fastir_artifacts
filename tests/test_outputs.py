@@ -127,7 +127,7 @@ def test_collect_file_size_filter(temp_dir, test_file):
     with open(test_big_file, 'w') as f:
         f.write('some bigger content')
 
-    output = Outputs(temp_dir, '15', False)  # Set maximum size to 10 bytes
+    output = Outputs(temp_dir, '15', False)  # Set maximum size to 15 bytes
     output.add_collected_file('TestArtifact', OSFileSystem('/').get_fullpath(test_file))
     output.add_collected_file('TestArtifact', OSFileSystem('/').get_fullpath(test_big_file))
     output.close()

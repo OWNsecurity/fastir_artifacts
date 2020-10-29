@@ -4,9 +4,11 @@ import json
 import logging
 import zipfile
 import platform
+import jsonlines
 from datetime import datetime
 from collections import defaultdict
 
+from .file_info import FileInfo
 from .logging import logger, PROGRESS
 
 
@@ -47,6 +49,8 @@ class Outputs:
         self._wmi = defaultdict(dict)
         self._registry = defaultdict(lambda: defaultdict(dict))
 
+        self._file_info = None
+
         self._init_output_()
 
     def _init_output_(self):
@@ -77,6 +81,20 @@ class Outputs:
 
         logger.addHandler(file_output)
         logger.addHandler(console_output)
+
+    def add_collected_file_info(self, artifact, path_object):
+        info = FileInfo(path_object)
+
+        if not self._maxsize or info.size <= self._maxsize:
+            # Open the result file if this is the first time it is needed
+            if self._file_info is None:
+                self._file_info = jsonlines.open(
+                    os.path.join(self._dirpath, f'{self._hostname}-file_info.jsonl'), 'w')
+
+            file_info = info.compute()
+            file_info['labels'] = {'artifact': artifact}
+
+            self._file_info.write(file_info)
 
     def add_collected_file(self, artifact, path_object):
         logger.info(f"Collecting file '{path_object.path}' for artifact '{artifact}'")
@@ -138,6 +156,9 @@ class Outputs:
         if self._registry:
             with open(os.path.join(self._dirpath, f'{self._hostname}-registry.json'), 'w') as out:
                 json.dump(self._registry, out, indent=2)
+
+        if self._file_info:
+            self._file_info.close()
 
         for handler in logger.handlers[:]:
             handler.close()

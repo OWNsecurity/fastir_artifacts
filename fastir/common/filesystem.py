@@ -4,6 +4,7 @@ import os
 import pytsk3
 import psutil
 import artifacts
+from artifacts.source_type import FileSourceType
 
 from fastir.common.logging import logger
 from fastir.common.collector import AbstractCollector
@@ -12,7 +13,7 @@ from fastir.common.path_components import RecursionPathComponent, GlobPathCompon
 CHUNK_SIZE = 5 * 1024 * 1024
 PATH_RECURSION_REGEX = re.compile(r"\*\*(?P<max_depth>\d*)")
 PATH_GLOB_REGEX = re.compile(r"\*|\?|\[.+\]")
-
+FILE_INFO_TYPE = "FILE_INFO"
 TSK_FILESYSTEMS = ['NTFS', 'ext3', 'ext4']
 
 
@@ -20,10 +21,11 @@ class FileSystem:
     def __init__(self):
         self._patterns = []
 
-    def add_pattern(self, artifact, pattern):
+    def add_pattern(self, artifact, pattern, source_type='FILE'):
         self._patterns.append({
             'artifact': artifact,
-            'pattern': pattern
+            'pattern': pattern,
+            'source_type': source_type
         })
 
     def _relative_path(self, filepath):
@@ -69,7 +71,10 @@ class FileSystem:
 
             for path in generator():
                 try:
-                    output.add_collected_file(pattern['artifact'], path)
+                    if pattern['source_type'] == FILE_INFO_TYPE:
+                        output.add_collected_file_info(pattern['artifact'], path)
+                    else:
+                        output.add_collected_file(pattern['artifact'], path)
                 except Exception as e:
                     logger.error(f"Error collecting file '{path.path}': {str(e)}")
 
@@ -296,7 +301,7 @@ class FileSystemManager(AbstractCollector):
         filesystem = self._get_filesystem(filepath)
         return filesystem.get_fullpath(filepath)
 
-    def add_pattern(self, artifact, pattern):
+    def add_pattern(self, artifact, pattern, source_type='FILE'):
         pattern = os.path.normpath(pattern)
 
         # If the pattern starts with '\', it should be applied to all drives
@@ -305,11 +310,11 @@ class FileSystemManager(AbstractCollector):
                 if mountpoint.fstype in TSK_FILESYSTEMS:
                     extended_pattern = os.path.join(mountpoint.mountpoint, pattern[1:])
                     filesystem = self._get_filesystem(extended_pattern)
-                    filesystem.add_pattern(artifact, extended_pattern)
+                    filesystem.add_pattern(artifact, extended_pattern, source_type)
 
         else:
             filesystem = self._get_filesystem(pattern)
-            filesystem.add_pattern(artifact, pattern)
+            filesystem.add_pattern(artifact, pattern, source_type)
 
     def collect(self, output):
         for path in list(self._filesystems):
@@ -319,11 +324,21 @@ class FileSystemManager(AbstractCollector):
     def register_source(self, artifact_definition, artifact_source, variables):
         supported = False
 
-        if artifact_source.type_indicator == artifacts.definitions.TYPE_INDICATOR_FILE:
+        if artifact_source.type_indicator in [artifacts.definitions.TYPE_INDICATOR_FILE, FILE_INFO_TYPE]:
             supported = True
 
             for p in artifact_source.paths:
                 for sp in variables.substitute(p):
-                    self.add_pattern(artifact_definition.name, sp)
+                    self.add_pattern(artifact_definition.name, sp, artifact_source.type_indicator)
 
         return supported
+
+
+class FileInfoSourceType(FileSourceType):
+    """Custom Source Type to collect file info instead of content"""
+    TYPE_INDICATOR = FILE_INFO_TYPE
+
+
+# register custom source type
+artifacts.registry.ArtifactDefinitionsRegistry.RegisterSourceType(FileInfoSourceType)
+artifacts.source_type.SourceTypeFactory.RegisterSourceType(FileInfoSourceType)

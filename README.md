@@ -1,6 +1,6 @@
 # FastIR Artifacts
 
-## What is FastIR Artifacts?
+## What is FastIR Artifacts
 
 FastIR Artifacts is a forensic artifacts collector that can be used on a live host.
 
@@ -60,6 +60,7 @@ defined in `examples/sekoia.yaml` designed for quick acquisition.
 ## Creating a custom FastIR Artifacts collector from a release
 
 To create a custom FastIR Artifacts collector (custom artifact definitions and custom options):
+
 - download a release for your operating system, unzip it
 - create a directory with your custom artifact definitions inside the `fastir_artifacts` folder, for instance `custom_artifacts`
 - create a `fastir_artifacts.ini` file
@@ -67,13 +68,51 @@ To create a custom FastIR Artifacts collector (custom artifact definitions and c
 - add more options to the `fastir_artifacts.ini` file for instance `library = True` and  `exclude = BrowserCache,WindowsSearchDatabase`
 - zip the `fastir_artifacts` folder and ship it
 
+## Custom Artifact Types
+
+FastIR Artifacts supports the following artifact types in addition to the types defined by the [Digital Forensics Artifact Repository](https://github.com/ForensicArtifacts/artifacts).
+
+### FileInfo
+
+The FileInfo artifact type can be used to collect metadata about files instead of collecting the files themselves:
+
+```yaml
+name: System32 Metadata
+doc: Metadata about dll and exe files in System32.
+sources:
+- type: FILE_INFO
+  attributes:
+    paths:
+    - '%%environ_systemroot%%\System32\*.dll'
+    - '%%environ_systemroot%%\System32\*.exe'
+    - '%%environ_systemroot%%\System32\**\*.dll'
+    - '%%environ_systemroot%%\System32\**\*.exe'
+    separator: '\'
+supported_os: [Windows]
+```
+
+It collects the following information (stored in a JSONL file using [Elastic Common Schema](https://www.elastic.co/guide/en/ecs/current/index.html)):
+
+- MD5 hash
+- SHA-1 hash
+- SHA-256 hash
+- Mime type
+- File size
+- Imphash (PE only)
+- Compilation Date (PE only)
+- Company Name (PE only)
+- File Description (PE only)
+- File Version (PE only)
+- Internal Name (PE only)
+- Product Name (PE only)
+
 ## Development
 
 ### Requirements
 
 python 3 and pip must be installed.  FastIR was successfully tested with python 3.6 and 3.7.
 
-On Windows, Microsoft Visual C++ 14.0 is needed (See https://wiki.python.org/moin/WindowsCompilers).
+On Windows, Microsoft Visual C++ 14.0 is needed (See [Windows Compilers](https://wiki.python.org/moin/WindowsCompilers)).
 
 Dependencies can be installed with:
 ```

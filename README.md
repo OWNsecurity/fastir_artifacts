@@ -61,12 +61,12 @@ defined in `examples/sekoia.yaml` designed for quick acquisition.
 
 To create a custom FastIR Artifacts collector (custom artifact definitions and custom options):
 
-  - download a release for your operating system, unzip it
-  - create a directory with your custom artifact definitions inside the `fastir_artifacts` folder, for instance `custom_artifacts`
-  - create a `fastir_artifacts.ini` file
-  - add a `directory = custom_artifacts` line to the `fastir_artifacts.ini` file
-  - add more options to the `fastir_artifacts.ini` file for instance `library = True` and  `exclude = BrowserCache,WindowsSearchDatabase`
-  - zip the `fastir_artifacts` folder and ship it
+- download a release for your operating system, unzip it
+- create a directory with your custom artifact definitions inside the `fastir_artifacts` folder, for instance `custom_artifacts`
+- create a `fastir_artifacts.ini` file
+- add a `directory = custom_artifacts` line to the `fastir_artifacts.ini` file
+- add more options to the `fastir_artifacts.ini` file for instance `library = True` and  `exclude = BrowserCache,WindowsSearchDatabase`
+- zip the `fastir_artifacts` folder and ship it
 
 ## Custom Artifact Types
 
@@ -93,18 +93,18 @@ supported_os: [Windows]
 
 It collects the following information (stored in a JSONL file using [Elastic Common Schema](https://www.elastic.co/guide/en/ecs/current/index.html)):
 
-  - MD5 hash
-  - SHA-1 hash
-  - SHA-256 hash
-  - Mime type
-  - File size
-  - Imphash (PE only)
-  - Compilation Date (PE only)
-  - Company Name (PE only)
-  - File Description (PE only)
-  - File Version (PE only)
-  - Internal Name (PE only)
-  - Product Name (PE only)
+- MD5 hash
+- SHA-1 hash
+- SHA-256 hash
+- Mime type
+- File size
+- Imphash (PE only)
+- Compilation Date (PE only)
+- Company Name (PE only)
+- File Description (PE only)
+- File Version (PE only)
+- Internal Name (PE only)
+- Product Name (PE only)
 
 ## Development
 

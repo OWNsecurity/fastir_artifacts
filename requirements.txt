@@ -1,7 +1,7 @@
 git+https://github.com/ForensicArtifacts/artifacts.git@6356d48fb315b13daf54fec737793b6c249f47f3#egg=artifacts
 ConfigArgParse==1.2.3
 pypiwin32==223 ; sys_platform == 'win32'
-PyYAML==5.3.1
+PyYAML==5.4
 pytsk3==20200117
 PyInstaller==3.6
 psutil==5.7.0

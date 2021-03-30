@@ -18,7 +18,7 @@ class RegistryReader(FileSystem):
 
     def _key(self, path_object, parent):
         if path_object.path not in self._keys:
-            self._keys[path_object.path] = winreg.OpenKey(parent.obj, path_object.name)
+            self._keys[path_object.path] = winreg.OpenKey(parent.obj, path_object.name, 0, winreg.KEY_READ|winreg.KEY_WOW64_64KEY)
 
         path_object.obj = self._keys[path_object.path]
 

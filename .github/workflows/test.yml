@@ -1,0 +1,23 @@
+name: FastIR testing
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+  workflow_dispatch:
+
+jobs:
+  run_tests:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Use fast-IR repository
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+    - name: install dependencies
+      run: |
+        pip install -r requirements.txt
+        pip install -r requirements-test.txt
+    - name: run tests
+      run: pytest

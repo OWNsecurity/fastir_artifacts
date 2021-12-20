@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  tests_linux:
+  tests:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:

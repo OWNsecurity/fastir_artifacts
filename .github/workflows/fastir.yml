@@ -12,14 +12,16 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [windows-2022, windows-2019, windows-2016, ubuntu-latest, macos-latest]
+        os: [windows-2022, windows-2019, windows-2016]
         python-version: ['3.9']
         arch: [x86]
         include:
           - os: ubuntu-latest
             arch: x64
+            python-version: '3.9'
           - os: macos-latest
             arch: x64
+            python-version: '3.9'
     steps:
       - name: Use fast-IR repository
         uses: actions/checkout@v2

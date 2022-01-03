@@ -6,7 +6,7 @@ from fastir.common.variables import HostVariables
 
 
 def reg(hive, key, value, alternative_value=None):
-    k = winreg.OpenKey(hive, key)
+    k = winreg.OpenKey(hive, key, 0, winreg.KEY_READ|winreg.KEY_WOW64_64KEY)
 
     try:
         v = winreg.QueryValueEx(k, value)

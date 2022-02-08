@@ -64,5 +64,7 @@ jobs:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
           automatic_release_tag: "latest"
           title: "Release ${{ steps.current-time.outputs.formattedTime }}-${{ github.sha }}"
+          prerelease: false
+          draft: true
           files: |
-            FastIR-Artifacts-*.zip
+            FastIR-Artifacts-*

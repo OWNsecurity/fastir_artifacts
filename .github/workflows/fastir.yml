@@ -23,7 +23,7 @@ jobs:
             arch: x64
             python-version: '3.9'
     steps:
-      - name: Use fast-IR repository
+      - name: Use FastIR repository
         uses: actions/checkout@v2
         with:
           fetch-depth: 0

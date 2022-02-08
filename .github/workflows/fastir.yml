@@ -67,4 +67,4 @@ jobs:
           prerelease: false
           draft: true
           files: |
-            FastIR-Artifacts-*
+            /home/runner/work/fastir_artifacts/fastir_artifacts/FastIR-Artifacts*

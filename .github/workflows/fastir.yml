@@ -58,6 +58,7 @@ jobs:
         with:
           format: YYYYMMDD-HHmm
       - name: Download artifacts
+        id: download-artifacts
         uses: actions/download-artifact@v2
       - uses: "marvinpinto/action-automatic-releases@latest"
         with:
@@ -67,4 +68,4 @@ jobs:
           prerelease: false
           draft: true
           files: |
-            *.zip
+            ${{steps.download-artifacts.outputs.download-path}}/FastIR-Artifacts-*

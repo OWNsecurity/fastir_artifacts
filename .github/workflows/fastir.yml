@@ -8,8 +8,30 @@ on:
   workflow_dispatch:
 
 jobs:
-  tests:
+  release:
+    runs-on: ubuntu-latest
+    needs: tests
+    if: github.ref == 'refs/heads/master' && github.event_name == 'push'
+    outputs:
+      tag: ${{ steps.release-creation.outputs.automatic_releases_tag }}
+    steps:
+      - name: Get current time
+        uses: 1466587594/get-current-time@v2
+        id: current-time
+        with:
+          format: YYYYMMDD-HHmm
+      - name: Create release
+        uses: "marvinpinto/action-automatic-releases@latest"
+        id: release-creation
+        with:
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          automatic_release_tag: "latest"
+          title: "Release ${{ steps.current-time.outputs.formattedTime }}-${{ github.sha }}"
+          prerelease: false
+          draft: true
+  build:
     runs-on: ${{ matrix.os }}
+    needs: release
     strategy:
       matrix:
         os: [windows-2019]
@@ -42,35 +64,9 @@ jobs:
           pyinstaller fastir_artifacts.spec
           python -m pytest integration_tests
           python -m zipfile -c FastIR-Artifacts-${{ runner.os }}-${{ matrix.arch }}.zip dist/fastir_artifacts
-      - name: Upload result
-        uses: actions/upload-artifact@v2
+      - name: Upload asset
+        if: github.ref == 'refs/heads/master' && github.event_name == 'push'
         with:
-          name: FastIR-Artifacts-${{ runner.os }}-${{ matrix.arch }}.zip
-          path: FastIR-Artifacts-${{ runner.os }}-${{ matrix.arch }}.zip
-  deploy:
-    runs-on: ubuntu-latest
-    needs: tests
-    if: github.ref == 'refs/heads/master' && github.event_name == 'push'
-    steps:
-      - name: Get current time
-        uses: 1466587594/get-current-time@v2
-        id: current-time
-        with:
-          format: YYYYMMDD-HHmm
-      - name: Download artifacts
-        id: download-artifacts
-        uses: actions/download-artifact@v2
-        with:
-          path: /tmp/artifacts
-      - name: test
-        run: |
-          ls ${{steps.download-artifacts.outputs.download-path}}
-      - name: Create Release
-        uses: "softprops/action-gh-release@v1"
-        with:
-          fail_on_unmatched_files: true
-          draft: true
-          prerelease: false
-          generate_release_notes: true
-          name: Release ${{ steps.current-time.outputs.formattedTime }}-${{ github.sha }}
-          files: ${{steps.download-artifacts.outputs.download-path}}/*
+          files: FastIR-Artifacts-${{ runner.os }}-${{ matrix.arch }}.zip
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          release-tag: ${{ needs.release.outputs.tag }}

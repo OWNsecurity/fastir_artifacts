@@ -12,7 +12,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [windows-2022]
+        os: [windows-2019]
         python-version: ['3.9']
         arch: [x86]
         include:
@@ -60,24 +60,17 @@ jobs:
       - name: Download artifacts
         id: download-artifacts
         uses: actions/download-artifact@v2
+        with:
+          path: /tmp/artifacts
       - name: test
         run: |
           ls ${{steps.download-artifacts.outputs.download-path}}
       - name: Create Release
         uses: "softprops/action-gh-release@v1"
-        if: startsWith(github.ref, '')
         with:
           fail_on_unmatched_files: true
           draft: true
-          prerelease: true
+          prerelease: false
           generate_release_notes: true
           name: Release ${{ steps.current-time.outputs.formattedTime }}-${{ github.sha }}
-          files: ${{steps.download-artifacts.outputs.download-path}}/*.zip
-      - uses: "marvinpinto/action-automatic-releases@latest"
-        with:
-          repo_token: "${{ secrets.GITHUB_TOKEN }}"
-          automatic_release_tag: "latest"
-          title: "Release ${{ steps.current-time.outputs.formattedTime }}-${{ github.sha }}"
-          prerelease: false
-          draft: true
-          files: ${{steps.download-artifacts.outputs.download-path}}/*.zip
+          files: ${{steps.download-artifacts.outputs.download-path}}/*

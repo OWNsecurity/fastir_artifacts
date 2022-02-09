@@ -63,6 +63,16 @@ jobs:
       - name: test
         run: |
           ls ${{steps.download-artifacts.outputs.download-path}}
+      - name: Create Release
+        uses: "softprops/action-gh-release@v1"
+        if: startsWith(github.ref, '')
+        with:
+          fail_on_unmatched_files: true
+          draft: true
+          prerelease: true
+          generate_release_notes: true
+          name: Release ${{ steps.current-time.outputs.formattedTime }}-${{ github.sha }}
+          files: ${{steps.download-artifacts.outputs.download-path}}/*.zip
       - uses: "marvinpinto/action-automatic-releases@latest"
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
@@ -70,5 +80,4 @@ jobs:
           title: "Release ${{ steps.current-time.outputs.formattedTime }}-${{ github.sha }}"
           prerelease: false
           draft: true
-          files: |
-            ${{steps.download-artifacts.outputs.download-path}}/FastIR-Artifacts-*
+          files: ${{steps.download-artifacts.outputs.download-path}}/*.zip

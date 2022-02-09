@@ -12,7 +12,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [windows-2022, windows-2019, windows-2016]
+        os: [windows-2022]
         python-version: ['3.9']
         arch: [x86]
         include:
@@ -60,6 +60,9 @@ jobs:
       - name: Download artifacts
         id: download-artifacts
         uses: actions/download-artifact@v2
+      - name: test
+        run: |
+          ls ${{steps.download-artifacts.outputs.download-path}}
       - uses: "marvinpinto/action-automatic-releases@latest"
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"

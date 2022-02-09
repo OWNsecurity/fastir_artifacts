@@ -63,6 +63,7 @@ jobs:
           pyinstaller fastir_artifacts.spec
           python -m pytest integration_tests
           python -m zipfile -c FastIR-Artifacts-${{ runner.os }}-${{ matrix.arch }}.zip dist/fastir_artifacts
+          ls -lht
       - name: Upload asset
         uses: AButler/upload-release-assets@v2.0
         if: github.ref == 'refs/heads/master' && github.event_name == 'push'

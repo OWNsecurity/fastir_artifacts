@@ -27,7 +27,7 @@ jobs:
           automatic_release_tag: "latest"
           title: "Release ${{ steps.current-time.outputs.formattedTime }}-${{ github.sha }}"
           prerelease: false
-          draft: true
+          draft: false
   build:
     runs-on: ${{ matrix.os }}
     needs: release

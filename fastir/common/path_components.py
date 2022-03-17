@@ -54,7 +54,7 @@ class RecursionPathComponent(PathComponent):
             yield from self._recurse_from_dir(parent, depth=0)
 
     def _recurse_from_dir(self, parent, depth):
-        if depth < self.max_depth:
+        if depth < self.max_depth or self.max_depth == -1:
             for path in parent.list_directory():
                 if path.is_directory():
                     yield from self._recurse_from_dir(path, depth + 1)

@@ -9,7 +9,7 @@ a = Analysis(['fastir_artifacts.py'],
              binaries=[],
              datas=[(os.path.join(sys.prefix, 'share', 'artifacts'), os.path.join('share', 'artifacts')),
                     (os.path.join('examples', 'fastir_artifacts.ini'), '.'),
-                    (os.path.join('examples', 'sekoia.yaml'), os.path.join('share', 'artifacts'))],
+                    (os.path.join('examples', 'own.yaml'), os.path.join('share', 'artifacts'))],
              hiddenimports=[],
              hookspath=[],
              runtime_hooks=[],
@@ -32,7 +32,7 @@ exe = EXE(pyz,
           upx=False,
           console=True,
           uac_admin=True,
-          icon='favicon_sekoia_150x150_r6F_icon.ico')
+          icon='favicon_own_32.png')
 
 coll = COLLECT(exe,
                a.binaries,

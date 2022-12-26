@@ -324,11 +324,13 @@ class FileSystemManager(AbstractCollector):
     def register_source(self, artifact_definition, artifact_source, variables):
         supported = False
 
-        if artifact_source.type_indicator in [artifacts.definitions.TYPE_INDICATOR_FILE, FILE_INFO_TYPE]:
+        if artifact_source.type_indicator in [artifacts.definitions.TYPE_INDICATOR_FILE, artifacts.definitions.TYPE_INDICATOR_PATH, FILE_INFO_TYPE]:
             supported = True
 
             for p in artifact_source.paths:
                 for sp in variables.substitute(p):
+                    if (artifact_source.type_indicator is artifacts.definitions.TYPE_INDICATOR_PATH) and sp.endswith('*'):
+                        sp += "*"
                     self.add_pattern(artifact_definition.name, sp, artifact_source.type_indicator)
 
         return supported

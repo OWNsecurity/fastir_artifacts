@@ -22,7 +22,7 @@ FastIR Artifacts must be run with admin rights (for instance using sudo on GNU/L
 
 Run FastIR Artifacts with -h argument to see available options.
 ```
-C:\Users\sekoia\Desktop\fastir_artifacts>fastir_artifacts.exe -h
+C:\Users\own\Desktop\fastir_artifacts>fastir_artifacts.exe -h
 usage: fastir_artifacts.exe [-h] [-i INCLUDE] [-e EXCLUDE]
                             [-d DIRECTORY [DIRECTORY ...]] [-l] [-m MAXSIZE]
                             [-o OUTPUT] [-s]
@@ -55,7 +55,7 @@ optional arguments:
 Options can be taken from command line switches or from a `fastir_artifacts.ini` configuration file.
 
 Without any `include` or `exclude` argument set, FastIR Artifacts will collect a set of artifacts
-defined in `examples/sekoia.yaml` designed for quick acquisition.
+defined in `examples/own.yaml` designed for quick acquisition.
 
 ## Creating a custom FastIR Artifacts collector from a release
 

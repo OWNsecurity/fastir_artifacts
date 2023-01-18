@@ -55,7 +55,7 @@ jobs:
           architecture: ${{ matrix.arch }}
       - name: install dependencies  
         run: |
-          pip install -U -r --use-pep517 requirements.txt
+          pip install --use-pep517 -U -r requirements.txt
           pip install -U -r requirements-test.txt
       - name: run tests
         run: |

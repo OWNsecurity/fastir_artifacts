@@ -21,7 +21,7 @@ TEST_ARTIFACTS = [
     'LinuxProcMounts',
 
     # MacOS Artifacts
-    'MacOSLoadedKexts',
+    'MacOSLogFile',
 
     # Windows Artifacts
     'WindowsFirewallEnabledRules',

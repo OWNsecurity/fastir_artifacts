@@ -34,22 +34,22 @@ jobs:
     strategy:
       matrix:
         os: [windows-2019]
-        python-version: ['3.9']
-        arch: [x86]
+        python-version: ['3.10']
+        arch: [x86,x64]
         include:
           - os: ubuntu-latest
             arch: x64
-            python-version: '3.9'
+            python-version: '3.10'
           - os: macos-latest
             arch: x64
-            python-version: '3.9'
+            python-version: '3.10'
     steps:
       - name: Use FastIR repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           fetch-depth: 0
       - name: Install python
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v4
         with:
           python-version: ${{ matrix.python-version }}
           architecture: ${{ matrix.arch }}

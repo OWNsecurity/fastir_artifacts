@@ -21,7 +21,7 @@ TEST_ARTIFACTS = [
     'LinuxProcMounts',
 
     # MacOS Artifacts
-    'MacOSLogFile',
+    'MacOSUtmpxFile',
 
     # Windows Artifacts
     'WindowsFirewallEnabledRules',
@@ -170,8 +170,8 @@ def test_file_mounts(files_results_names, files_results):
 ## macOS Tests
 #####################
 @pytest.mark.darwin
-def test_command_kexts(files_results_names, files_results):
-    assert 'system.log' in files_results_names
+def test_file_utmp(files_results_names, files_results):
+    assert '/var/run/utmpx' in files_results_names
 
 
 #####################

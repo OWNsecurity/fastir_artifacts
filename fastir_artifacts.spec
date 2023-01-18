@@ -32,7 +32,7 @@ exe = EXE(pyz,
           upx=False,
           console=True,
           uac_admin=True,
-          icon='favicon_sekoia_150x150_r6F_icon.ico')
+          icon='Logo_OWN-Noir.ico')
 
 coll = COLLECT(exe,
                a.binaries,

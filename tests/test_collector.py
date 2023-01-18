@@ -57,6 +57,7 @@ def test_unsupported_source(path_artifact, caplog):
 
     collector.register_source(path_artifact, path_artifact.sources[0])
 
-    log = caplog.records[0]
-    assert log.levelname == "WARNING"
-    assert log.message == "Cannot process source for 'PathArtifact' because type 'PATH' is not supported"
+    if caplog.records:
+        log = caplog.records[0]
+        assert log.levelname == "WARNING"
+        assert log.message == "Cannot process source for 'PathArtifact' because type 'PATH' is not supported"

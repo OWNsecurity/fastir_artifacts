@@ -17,6 +17,7 @@ TEST_ARTIFACTS = [
 
     # Linux Artifacts
     'IPTablesRules',
+    'LinuxPasswdFile',
     'LinuxProcMounts',
 
     # MacOS Artifacts

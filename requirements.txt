@@ -2,8 +2,7 @@ git+https://github.com/ForensicArtifacts/artifacts.git@6b4753931aeb55f97a1838bdf
 ConfigArgParse==1.5.3
 pypiwin32==223 ; sys_platform == 'win32'
 PyYAML==6.0
-# pytsk3==20211111
-git+https://github.com/py4n6/pytsk.git@c67b666a625fed74b4bf56a9d0561ba6451b9916
+pytsk3==20211111
 PyInstaller==4.10
 psutil==5.9.0
 jsonlines==3.0.0

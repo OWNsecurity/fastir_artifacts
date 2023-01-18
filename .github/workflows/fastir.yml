@@ -34,7 +34,7 @@ jobs:
     strategy:
       matrix:
         os: [windows-2019]
-        python-version: ['3.9']
+        python-version: ['3.10']
         arch: [x86]
         include:
           - os: ubuntu-latest
@@ -55,7 +55,7 @@ jobs:
           architecture: ${{ matrix.arch }}
       - name: install dependencies  
         run: |
-          pip install -U -r requirements.txt
+          pip install -U -r --use-pep517 requirements.txt
           pip install -U -r requirements-test.txt
       - name: run tests
         run: |

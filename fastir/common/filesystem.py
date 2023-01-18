@@ -11,7 +11,7 @@ from fastir.common.collector import AbstractCollector
 from fastir.common.path_components import RecursionPathComponent, GlobPathComponent, RegularPathComponent, PathObject
 
 CHUNK_SIZE = 5 * 1024 * 1024
-PATH_RECURSION_REGEX = re.compile(r"\*\*(?P<max_depth>\d*)")
+PATH_RECURSION_REGEX = re.compile(r"\*\*(?P<max_depth>(-1|\d*))")
 PATH_GLOB_REGEX = re.compile(r"\*|\?|\[.+\]")
 FILE_INFO_TYPE = "FILE_INFO"
 TSK_FILESYSTEMS = ['NTFS', 'ext3', 'ext4']
@@ -324,11 +324,13 @@ class FileSystemManager(AbstractCollector):
     def register_source(self, artifact_definition, artifact_source, variables):
         supported = False
 
-        if artifact_source.type_indicator in [artifacts.definitions.TYPE_INDICATOR_FILE, FILE_INFO_TYPE]:
+        if artifact_source.type_indicator in [artifacts.definitions.TYPE_INDICATOR_FILE, artifacts.definitions.TYPE_INDICATOR_PATH, FILE_INFO_TYPE]:
             supported = True
 
             for p in artifact_source.paths:
                 for sp in variables.substitute(p):
+                    if artifact_source.type_indicator == artifacts.definitions.TYPE_INDICATOR_PATH and (sp[-1] != '*'):
+                        sp = f"{sp}/**-1"
                     self.add_pattern(artifact_definition.name, sp, artifact_source.type_indicator)
 
         return supported

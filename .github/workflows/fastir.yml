@@ -15,7 +15,7 @@ jobs:
       tag: ${{ steps.release-creation.outputs.automatic_releases_tag }}
     steps:
       - name: Get current time
-        uses: 1466587594/get-current-time@v2
+        uses: 1466587594/get-current-time@v2.0.2
         id: current-time
         with:
           format: YYYYMMDD-HHmm
@@ -34,8 +34,8 @@ jobs:
     strategy:
       matrix:
         os: [windows-2019]
-        python-version: ['3.10']
-        arch: [x86,x64]
+        python-version: ['3.9']
+        arch: [x86]
         include:
           - os: ubuntu-latest
             arch: x64

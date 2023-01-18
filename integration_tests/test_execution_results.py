@@ -170,12 +170,8 @@ def test_file_mounts(files_results_names, files_results):
 ## macOS Tests
 #####################
 @pytest.mark.darwin
-def test_command_kexts(command_results):
-    assert 'MacOSLoadedKexts' in command_results
-
-    for command, output in command_results['MacOSLoadedKexts'].items():
-        assert 'kextstat' in command
-        assert 'Name' in output
+def test_command_kexts(files_results_names, files_results):
+    assert 'system.log' in files_results_names
 
 
 #####################

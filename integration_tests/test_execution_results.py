@@ -17,11 +17,11 @@ TEST_ARTIFACTS = [
 
     # Linux Artifacts
     'IPTablesRules',
-    'UnixPasswdFile',
     'LinuxProcMounts',
 
     # MacOS Artifacts
     'MacOSUtmpxFile',
+    'MacOSLoadedKexts',
 
     # Windows Artifacts
     'WindowsFirewallEnabledRules',
@@ -172,6 +172,15 @@ def test_file_mounts(files_results_names, files_results):
 @pytest.mark.darwin
 def test_file_utmp(files_results_names, files_results):
     assert '/var/run/utmpx' in files_results_names
+
+
+@pytest.mark.darwin
+def test_command_kextstat(command_results):
+    assert 'MacOSLoadedKexts' in command_results
+
+    for command, output in command_results['MacOSLoadedKexts'].items():
+        assert 'kextstat' in command
+        assert 'com.apple' in output
 
 
 #####################

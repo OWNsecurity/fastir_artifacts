@@ -53,7 +53,11 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
           architecture: ${{ matrix.arch }}
-      - name: Install Dependencies  
+      - name: Install windows compiler
+        run: |
+          choco install mingw make oraclejdk
+        if: runner.os == "windows-2019"
+      - name: Install Dependencies
         run: |
           python -m pip install --use-pep517 -U -r requirements.txt
           python -m pip install --use-pep517 -U -r requirements-test.txt

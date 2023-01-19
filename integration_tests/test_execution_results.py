@@ -13,7 +13,7 @@ import pytest
 FASTIR_ROOT = os.path.dirname(os.path.dirname(__file__))
 TEST_ARTIFACTS = [
     # UNIX Artifacts
-    'UnixPasswd',
+    'UnixPasswdFile',
 
     # Linux Artifacts
     'IPTablesRules',

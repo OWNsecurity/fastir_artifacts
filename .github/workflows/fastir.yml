@@ -55,7 +55,7 @@ jobs:
           architecture: ${{ matrix.arch }}
       - name: Install windows compiler
         run: |
-          choco install microsoft-visual-cpp-build-tools
+          choco install mingw make oraclejdk
         if: runner.os == 'windows'
       - name: Install Dependencies
         run: |

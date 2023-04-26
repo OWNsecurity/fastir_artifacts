@@ -136,7 +136,7 @@ class TSKFileSystem(FileSystem):
         else:
             # Make sure we do not keep more than 10 000 entries in the cache
             if len(self._entries_cache_last) >= 10000:
-                first = self._entries_cache_last.popleft()
+                first = self._entries_cache_last.pop(0)
                 del self._entries_cache[first]
 
             entries = []

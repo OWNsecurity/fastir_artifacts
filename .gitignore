@@ -33,6 +33,8 @@ venv/
 
 # pytest
 .pytest_cache/
+.coverage
+coverage.xml
 
 # editors
 .vscode/

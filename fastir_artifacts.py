@@ -47,7 +47,7 @@ def resolve_artifact_groups(registry, artifact_names):
         resolved_names = set()
 
         for artifact in artifact_names:
-            definition = registry.GetDefinitionByName(artifact)
+            definition = registry.GetDefinitionByAlias(artifact)
 
             if definition:
                 resolved_names.add(artifact)

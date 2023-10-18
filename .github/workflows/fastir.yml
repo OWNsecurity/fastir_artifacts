@@ -30,7 +30,6 @@ jobs:
           draft: false
   build:
     runs-on: ${{ matrix.os }}
-    needs: release
     strategy:
       matrix:
         os: [windows-2019]

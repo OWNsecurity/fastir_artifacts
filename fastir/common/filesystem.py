@@ -5,7 +5,6 @@ import pytsk3
 import psutil
 import artifacts
 from artifacts.source_type import FileSourceType
-from functools import lru_cache
 
 from fastir.common.logging import logger
 from fastir.common.collector import AbstractCollector
@@ -131,48 +130,7 @@ class TSKFileSystem(FileSystem):
         # they are still collected
         return OSFileSystem('/').get_fullpath(path_object.path)
 
-    @lru_cache(maxsize=10000)
     def list_directory(self, path_object):
-        entries = []
-        directory = path_object.obj
-
-        if not isinstance(directory, pytsk3.Directory):
-            if not self.is_directory(path_object):
-                return
-            try:
-                directory = path_object.obj.as_directory()
-            except OSError as err:
-                logger.error(f"Error collecting '{str(path_object.path)}': {err}")
-                directory = list()
-
-        for entry in directory:
-            if (
-                not hasattr(entry, 'info') or
-                not hasattr(entry.info, 'name') or
-                not hasattr(entry.info.name, 'name') or
-                entry.info.name.name in [b'.', b'..'] or
-                not hasattr(entry.info, 'meta') or
-                not hasattr(entry.info.meta, 'size') or
-                not hasattr(entry.info.meta, 'type') or
-                not self.is_allocated(entry)
-            ):
-                continue
-
-            name = entry.info.name.name.decode('utf-8', errors='replace')
-            filepath = os.path.join(path_object.path, name)
-            entry_path_object = PathObject(self, name, filepath, entry)
-
-            if entry.info.meta.type == pytsk3.TSK_FS_META_TYPE_LNK:
-                symlink_object = self._follow_symlink(path_object, entry_path_object)
-
-                if symlink_object:
-                    entries.append(symlink_object)
-            else:
-                entries.append(entry_path_object)
-
-        return entries
-
-    def list_directory_old(self, path_object):
         if path_object.path in self._entries_cache:
             return self._entries_cache[path_object.path]
         else:

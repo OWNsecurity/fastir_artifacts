@@ -94,7 +94,6 @@ class TSKFileSystem(FileSystem):
 
         # Cache parsed entries for better performances
         self._entries_cache = {}
-        self._entries_cache_last = []
 
         # Open drive
         img_info = pytsk3.Img_Info(self._device)
@@ -135,9 +134,8 @@ class TSKFileSystem(FileSystem):
             return self._entries_cache[path_object.path]
         else:
             # Make sure we do not keep more than 10 000 entries in the cache
-            if len(self._entries_cache_last) >= 10000:
-                first = self._entries_cache_last.pop(0)
-                del self._entries_cache[first]
+            if len(self._entries_cache) >= 10000:
+                self._entries_cache.pop(next(iter(self._entries_cache)))
 
             entries = []
             directory = path_object.obj
@@ -147,9 +145,9 @@ class TSKFileSystem(FileSystem):
                     return
                 try:
                     directory = path_object.obj.as_directory()
-                except OSError as err:
+                except Exception as err:
                     logger.error(f"Error collecting '{str(path_object.path)}': {err}")
-                    directory = list()
+                    return
 
             for entry in directory:
                 if (
@@ -177,7 +175,6 @@ class TSKFileSystem(FileSystem):
                     entries.append(entry_path_object)
 
             self._entries_cache[path_object.path] = entries
-            self._entries_cache_last.append(entries)
 
             return entries
 

@@ -57,6 +57,6 @@ class HostVariables:
 
             if not values:
                 logger.warning(f"Value '{value}' contains unsupported variables")
-                values.add(value)
+                # values.add(value)
 
         return values

@@ -30,19 +30,18 @@ jobs:
           draft: false
   build:
     runs-on: ${{ matrix.os }}
-    needs: release
     strategy:
       matrix:
         os: [windows-2019]
-        python-version: ['3.10']
+        python-version: ['3.11']
         arch: [x86, x64]
         include:
           - os: ubuntu-latest
             arch: x64
-            python-version: '3.10'
+            python-version: '3.11'
           - os: macos-latest
             arch: x64
-            python-version: '3.10'
+            python-version: '3.11'
     steps:
       - name: Use FastIR repository
         uses: actions/checkout@v3
@@ -66,10 +65,16 @@ jobs:
         run: |
           python -m pytest --cov-report xml --cov fastir tests
           pyinstaller fastir_artifacts.spec
-      - name: run tests on build
+      - name: run tests & zip
         run: |
           python -m pytest integration_tests
           python -m zipfile -c FastIR-Artifacts-${{ runner.os }}-${{ matrix.arch }}.zip dist/fastir_artifacts
+      - name: Archive build results
+        uses: actions/upload-artifact@v3
+        if: github.event_name == 'push' && !contains(github.ref, 'master')
+        with:
+          name: FastIR-Artifacts-${{ runner.os }}-${{ matrix.arch }}
+          path: FastIR-Artifacts-${{ runner.os }}-${{ matrix.arch }}.zip
       - name: Upload asset
         uses: AButler/upload-release-assets@v2.0
         if: github.ref == 'refs/heads/master' && github.event_name == 'push'

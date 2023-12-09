@@ -3,7 +3,7 @@ ConfigArgParse==1.5.3
 pypiwin32==223 ; sys_platform == 'win32'
 PyYAML==6.0
 pytsk3==20211111
-PyInstaller==4.10
+PyInstaller==5.13.1
 psutil==5.9.0
 jsonlines==3.0.0
 filetype==1.0.10

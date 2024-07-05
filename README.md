@@ -55,7 +55,7 @@ optional arguments:
 Options can be taken from command line switches or from a `fastir_artifacts.ini` configuration file.
 
 Without any `include` or `exclude` argument set, FastIR Artifacts will collect a set of artifacts
-defined in `examples/sekoia.yaml` designed for quick acquisition.
+defined in `examples/own.yaml` designed for quick acquisition.
 
 ## Creating a custom FastIR Artifacts collector from a release
 
